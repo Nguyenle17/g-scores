@@ -1,0 +1,31 @@
+.search-scores {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.search-scores__user-registration,
+.search-scores__detailed {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 32px;
+  width: 100%;
+  max-width: 720px;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.search-scores__user-registration__header,
+.search-scores__detailed__header {
+  font-size: 22px;
+  font-weight: 700;
+  color: #333333;
+  margin: 0 0 16px;
+}
+
+.search-scores__detailed__body {
+  color: #333333;
+  font-size: 15px;
+}
