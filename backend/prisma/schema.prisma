@@ -27,6 +27,4 @@ model Student {
     dia_li          Float?
     gdcd            Float?
     ma_ngoai_ngu    String?
-
-    @@index([toan, vat_li, hoa_hoc])
 }

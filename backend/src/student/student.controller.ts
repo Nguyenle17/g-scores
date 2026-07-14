@@ -10,6 +10,11 @@ export class StudentController {
     return this.studentService.findAll();
   }
 
+  @Get('top-group-a')
+  getTopGroupA() {
+    return this.studentService.top10StudentGroupA();
+  }
+
   @Get(':sbd')
   getBySbd(@Param('sbd') sbd: string) {
     return this.studentService.getBySbd(sbd);

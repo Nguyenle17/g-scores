@@ -1,6 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { StudentResponseDto } from './dto/StudentResponse';
+import { StudentTopGroupAResponseDto } from './dto/StudentTopGroupAResponseDto';
+
+type StudentTopGroupARow = {
+  id: number;
+  sbd: string;
+  toan: number;
+  vat_li: number;
+  hoa_hoc: number;
+  diem_khoi_a: number;
+};
 
 @Injectable()
 export class StudentService {
@@ -35,5 +45,31 @@ export class StudentService {
       gdcd: student.gdcd,
       maNgoaiNgu: student.ma_ngoai_ngu,
     };
+  }
+
+  async top10StudentGroupA(): Promise<Array<StudentTopGroupAResponseDto>> {
+    const students = await this.prisma.$queryRaw<StudentTopGroupARow[]>`
+    SELECT
+        sbd,
+        toan,
+        vat_li,
+        hoa_hoc,
+        (toan + vat_li + hoa_hoc) AS diem_khoi_a
+    FROM "Student"
+    WHERE toan IS NOT NULL
+        AND vat_li IS NOT NULL
+        AND hoa_hoc IS NOT NULL
+    ORDER BY diem_khoi_a DESC
+    LIMIT 10;
+    `;
+
+    return students.map((student) => ({
+      id: student.id,
+      sbd: student.sbd,
+      toan: student.toan,
+      vatLi: student.vat_li,
+      hoaHoc: student.hoa_hoc,
+      diemKhoiA: student.diem_khoi_a,
+    }));
   }
 }
