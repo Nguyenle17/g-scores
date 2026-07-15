@@ -160,13 +160,14 @@
 .student-card__subject-item {
   background: #fafbfc;
   border: 1px solid #eef1f4;
-  padding: 14px 8px 12px 8px;
+  padding: 14px 10px 12px 10px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
   transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  gap: 10px;
   cursor: default;
   min-height: 72px;
 }

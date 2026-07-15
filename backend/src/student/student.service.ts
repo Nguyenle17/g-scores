@@ -65,4 +65,8 @@ export class StudentService {
       diemKhoiA: student.diem_khoi_a,
     }));
   }
+
+  async getNumberOfStudents(): Promise<number> {
+    return this.prisma.student.count();
+  }
 }

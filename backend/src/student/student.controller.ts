@@ -16,6 +16,11 @@ export class StudentController {
     return this.studentService.top10StudentGroupA();
   }
 
+  @Get('total-students')
+  getNumberOfStudents() {
+    return this.studentService.getNumberOfStudents();
+  }
+
   @Get(':sbd')
   getBySbd(@Param() params: SearchStudentDto) {
     return this.studentService.getBySbd(params.sbd);

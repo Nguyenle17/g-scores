@@ -6,9 +6,19 @@ import { SubjectCodesDto } from './dto/SubjectCodesDto';
 export class SubjectsController {
   constructor(private readonly subjectService: SubjectsService) {}
 
-  @Get('/report')
+  @Get('report')
   getSujectDistribution(@Query() dto: SubjectCodesDto) {
     console.log(dto.codes);
     return this.subjectService.getSubjectDistribuition(dto.codes);
+  }
+
+  @Get('avg-score')
+  getSubjectAvgScore(@Query() dto: SubjectCodesDto) {
+    return this.subjectService.getAvgSubjectScore(dto.codes);
+  }
+
+  @Get('perfect-score')
+  getSubjectPerfectScore(@Query() dto: SubjectCodesDto) {
+    return this.subjectService.getPerfectSubjectScore(dto.codes);
   }
 }

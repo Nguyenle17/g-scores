@@ -2,7 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { SubjectManager } from './models/SubjectManager';
 import { SubjectDistribution } from './models/SubjectDistribuition';
-import { DistributionQueryRow } from './types/DistributionQueryRow';
+import { SubjectAverage } from './models/SubjectAverage';
+import { SubjectPerfectScore } from './models/SubjectPerfectScore';
+import { QueryRow } from './types/QueryRow';
 import { BadRequestException } from '@nestjs/common';
 
 @Injectable()
@@ -15,7 +17,7 @@ export class SubjectsService {
   async getSubjectDistribuition(
     subjectCodes: string[],
   ): Promise<SubjectDistribution[]> {
-    const rows = await this.prisma.$queryRaw<DistributionQueryRow[]>`
+    const rows = await this.prisma.$queryRaw<QueryRow[]>`
       SELECT
           -- Toán
             COUNT(*) FILTER (WHERE toan IS NOT NULL AND toan >= 8) AS toan_gte8,
@@ -74,7 +76,7 @@ export class SubjectsService {
       FROM "Student";   
       `;
 
-    const distribution: DistributionQueryRow = rows[0];
+    const distribution: QueryRow = rows[0];
     return subjectCodes.map((code) => {
       const subject = this.subjectManager.findByCode(code);
       if (!subject) {
@@ -87,6 +89,76 @@ export class SubjectsService {
         Number(distribution[`${code}_gte6_lt8`]),
         Number(distribution[`${code}_gte4_lt6`]),
         Number(distribution[`${code}_lt4`]),
+      );
+    });
+  }
+
+  async getAvgSubjectScore(subjectCodes: string[]): Promise<SubjectAverage[]> {
+    const subjects = subjectCodes.map((code) => {
+      const subject = this.subjectManager.findByCode(code);
+      if (!subject) {
+        throw new BadRequestException(`Invalid subject code: ${code}`);
+      }
+      return { code, subject };
+    });
+
+    const rows = await this.prisma.$queryRaw<QueryRow[]>`
+      SELECT
+        AVG(toan) AS toan_avg,
+        AVG(ngu_van) AS ngu_van_avg,
+        AVG(ngoai_ngu) AS ngoai_ngu_avg,
+        AVG(vat_li) AS vat_li_avg,
+        AVG(hoa_hoc) AS hoa_hoc_avg,
+        AVG(sinh_hoc) AS sinh_hoc_avg,
+        AVG(lich_su) AS lich_su_avg,
+        AVG(dia_li) AS dia_li_avg,
+        AVG(gdcd) AS gdcd_avg
+      FROM "Student";
+    `;
+
+    const result = rows[0];
+
+    return subjects.map(({ code, subject }) => {
+      const value = result[`${code}_avg`];
+      return new SubjectAverage(
+        subject,
+        value !== null && value !== undefined ? Number(value) : null,
+      );
+    });
+  }
+
+  async getPerfectSubjectScore(
+    subjectCodes: string[],
+  ): Promise<SubjectPerfectScore[]> {
+    const subjects = subjectCodes.map((code) => {
+      const subject = this.subjectManager.findByCode(code);
+      if (!subject) {
+        throw new BadRequestException(`Invalid subject code: ${code}`);
+      }
+      return { code, subject };
+    });
+
+    const rows = await this.prisma.$queryRaw<QueryRow[]>`
+      SELECT
+        COUNT(*) FILTER (WHERE toan IS NOT NULL AND toan = 10) AS toan_perfect,
+        COUNT(*) FILTER (WHERE ngu_van IS NOT NULL AND ngu_van = 10) AS ngu_van_perfect,
+        COUNT(*) FILTER (WHERE ngoai_ngu IS NOT NULL AND ngoai_ngu = 10) AS ngoai_ngu_perfect,
+        COUNT(*) FILTER (WHERE vat_li IS NOT NULL AND vat_li = 10) AS vat_li_perfect,
+        COUNT(*) FILTER (WHERE hoa_hoc IS NOT NULL AND hoa_hoc = 10) AS hoa_hoc_perfect,
+        COUNT(*) FILTER (WHERE sinh_hoc IS NOT NULL AND sinh_hoc = 10) AS sinh_hoc_perfect,
+        COUNT(*) FILTER (WHERE lich_su IS NOT NULL AND lich_su = 10) AS lich_su_perfect,
+        COUNT(*) FILTER (WHERE dia_li IS NOT NULL AND dia_li = 10) AS dia_li_perfect,
+        COUNT(*) FILTER (WHERE gdcd IS NOT NULL AND gdcd = 10) AS gdcd_perfect
+      FROM "Student";
+    `;
+
+    const result = rows[0];
+
+    return subjects.map(({ code, subject }) => {
+      const value = result[`${code}_perfect`];
+      return new SubjectPerfectScore(
+        subject,
+        value !== null && value !== undefined ? Number(value) : 0,
       );
     });
   }

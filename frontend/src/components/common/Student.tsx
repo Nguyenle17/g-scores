@@ -52,7 +52,7 @@ export default function Student({
             <h2 className='student-card__body__rank__header'>#{rank}</h2>
         </div>   
         )}
-
+        
         <div className='student-card__subjects'>
           {list.map((sub) => (
             <div key={sub.id} className='student-card__subject-item'>
