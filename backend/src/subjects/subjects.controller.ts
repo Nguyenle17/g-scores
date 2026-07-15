@@ -8,7 +8,6 @@ export class SubjectsController {
 
   @Get('report')
   getSujectDistribution(@Query() dto: SubjectCodesDto) {
-    console.log(dto.codes);
     return this.subjectService.getSubjectDistribuition(dto.codes);
   }
 

@@ -14,6 +14,13 @@ function parseScore(value: string | undefined): number | null {
 }
 
 async function main() {
+  const count = await prisma.student.count();
+
+  if (count > 0) {
+    console.log(`Database already contains ${count} students. Skip seeding.`);
+    return;
+  }
+
   const students: any[] = [];
 
   await new Promise<void>((resolve) => {

@@ -1,13 +1,33 @@
 services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: gscores
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: gscores
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gscores"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   backend:
     build: ./backend
     env_file:
       - path: ./backend/.env
-        required: false
+        required: true
     environment:
-      - DATABASE_URL=${DATABASE_URL:-postgresql://neondb_owner:npg_BmtJAZFW9f4L@ep-withered-frog-aol79lf4.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require}
-      - CLIENT_URL=${CLIENT_URL:-http://localhost:5173}
-      - PORT=${PORT:-3000}
+      DATABASE_URL: postgresql://gscores:123456@db:5432/gscores
+      CLIENT_URL: ${CLIENT_URL:-http://localhost:5173}
+      PORT: ${PORT:-3000}
+    depends_on:
+      db:
+        condition: service_healthy
     ports:
       - "3000:3000"
 
@@ -15,8 +35,11 @@ services:
     build: ./frontend
     env_file:
       - path: ./frontend/.env
-        required: false
+        required: true
     environment:
-      - VITE_API_URL=${VITE_API_URL:-http://localhost:3000/api/v1}
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:3000/api/v1}
     ports:
       - "5173:5173"
+
+volumes:
+  db_data:
