@@ -3,8 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 const PORT = process.env.PORT || 3000;
-// const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
-const CLIENT_URL = 'http://localhost:5173';
+const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
