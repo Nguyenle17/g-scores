@@ -1,0 +1,22 @@
+services:
+  backend:
+    build: ./backend
+    env_file:
+      - path: ./backend/.env
+        required: false
+    environment:
+      - DATABASE_URL=${DATABASE_URL:-postgresql://neondb_owner:npg_BmtJAZFW9f4L@ep-withered-frog-aol79lf4.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require}
+      - CLIENT_URL=${CLIENT_URL:-http://localhost:5173}
+      - PORT=${PORT:-3000}
+    ports:
+      - "3000:3000"
+
+  frontend:
+    build: ./frontend
+    env_file:
+      - path: ./frontend/.env
+        required: false
+    environment:
+      - VITE_API_URL=${VITE_API_URL:-http://localhost:3000/api/v1}
+    ports:
+      - "5173:5173"
