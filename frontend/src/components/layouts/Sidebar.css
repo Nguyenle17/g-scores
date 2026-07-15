@@ -1,29 +1,60 @@
 .sidebar {
-  width: 240px;
-  min-height: 100vh;
+  min-width: 260px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 32px 16px 0;
-  background: linear-gradient(180deg, #151b8d 0%, #10154f 100%);
+  padding: 32px 16px 24px;
+  background: linear-gradient(165deg, #0f1a3e 0%, #1b2a5e 40%, #141b4b 100%);
   box-sizing: border-box;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.20);
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.sidebar::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  left: -40px;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(170, 59, 255, 0.06) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
 }
 
 .sidebar__title {
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.40);
   font-weight: 700;
-  font-size: 12px;
-  letter-spacing: 0.12em;
+  font-size: 11px;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  margin: 0 0 20px;
+  margin: 0 0 24px;
   padding: 0 12px;
+  position: relative;
+  z-index: 1;
+  user-select: none;
 }
 
 .sidebar__nav {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
 }
 
 .sidebar__item {
@@ -31,46 +62,106 @@
   background: none;
   border: none;
   text-decoration: none;
-  padding: 10px 12px 10px 20px;
-  border-radius: 8px;
+  padding: 12px 16px 12px 48px; 
+  border-radius: 10px;
   text-align: left;
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 15px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  letter-spacing: 0.02em;
+  line-height: 1.4;
 }
 
+/* Icon giả lập bằng pseudo-element */
 .sidebar__item::before {
-  content: "";
+  content: "●";
   position: absolute;
-  left: 0;
+  left: 18px;
   top: 50%;
   transform: translateY(-50%);
-  width: 3px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.20);
+  transition: all 0.25s ease;
+}
+
+.sidebar__item::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
   height: 0;
-  border-radius: 2px;
-  background-color: #aa3bff;
-  transition: height 0.15s ease;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #aa3bff, #7c3aed);
+  transition: height 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .sidebar__item:hover {
-  background-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.07);
   color: #ffffff;
-  text-decoration: none;
+  transform: translateX(4px);
+}
+
+.sidebar__item:hover::before {
+  color: rgba(255, 255, 255, 0.50);
+  transform: translateY(-50%) scale(1.2);
 }
 
 .sidebar__item:focus-visible {
-  outline: 2px solid #ffffff;
+  outline: 2px solid #aa3bff;
   outline-offset: 2px;
+  border-radius: 10px;
 }
 
 .sidebar__item--active {
-  background-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.10);
   color: #ffffff;
-  font-weight: 700;
+  font-weight: 600;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .sidebar__item--active::before {
-  height: 18px;
+  color: #aa3bff;
+  content: "◆";
+  font-size: 12px;
+  left: 16px;
+}
+
+.sidebar__item--active::after {
+  height: 24px;
+}
+
+.sidebar__nav:last-child {
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: fit-content;
+    padding: 24px 12px 16px;
+  }
+
+  .sidebar__item {
+    padding: 10px 12px 10px 40px;
+    font-size: 13px;
+  }
+
+  .sidebar__item::before {
+    left: 14px;
+    font-size: 9px;
+  }
+
+  .sidebar__item--active::before {
+    left: 12px;
+    font-size: 10px;
+  }
+
+  .sidebar__title {
+    font-size: 10px;
+    margin-bottom: 18px;
+  }
 }

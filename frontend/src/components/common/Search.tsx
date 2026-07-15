@@ -1,12 +1,7 @@
 import { useState } from "react";
 import "./Search.css";
+import type { SearchProps } from "@/types/SearchProps";
 
-interface SearchProps {
-  label?: string;
-  query?: string;
-  placeholder?: string;
-  onSearch?: (query: string) => void;
-}
 
 export default function Search({
   label = "",
@@ -29,17 +24,19 @@ export default function Search({
   return (
     <div className="search">
       <label className="search__label" htmlFor="search__input">{label}</label>
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder={placeholder}
-        className="search__input"
-      />
-      <button onClick={handleSubmit} className="search__button">
-        Search
-      </button>
+      <div className="search__box">
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholder}
+          className="search__box__input"
+        />
+        <button onClick={handleSubmit} className="search__box__button">
+          Search
+        </button>
+      </div>
     </div>
   );
 }

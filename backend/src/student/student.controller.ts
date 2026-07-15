@@ -1,5 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { StudentService } from './student.service';
+import { SearchStudentDto } from './dto/SearchStudentDto';
 
 @Controller('students')
 export class StudentController {
@@ -16,7 +17,7 @@ export class StudentController {
   }
 
   @Get(':sbd')
-  getBySbd(@Param('sbd') sbd: string) {
-    return this.studentService.getBySbd(sbd);
+  getBySbd(@Param() params: SearchStudentDto) {
+    return this.studentService.getBySbd(params.sbd);
   }
 }

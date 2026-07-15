@@ -1,17 +1,7 @@
 import { NavLink } from "react-router-dom";
 import "./Sidebar.css";
+import { menuItems } from "@/constants/menu";
 
-interface MenuItem {
-  label: string;
-  path: string;
-}
-
-const menuItems: MenuItem[] = [
-  { label: "Dashboard", path: "/dashboard" },
-  { label: "Search Scores", path: "/" },
-  { label: "Reports", path: "/reports" },
-  { label: "Top 10 Students", path: "/top-students" },
-];
 
 export default function Sidebar() {
   return (

@@ -11,7 +11,12 @@
   font-size: 18px;
 }
 
-.search__input {
+.search__box {
+  display: flex;
+  gap: 8px;
+}
+
+.search__box__input {
   flex: 1;
   border: 1px solid #cccccc;
   border-radius: 6px;
@@ -21,17 +26,17 @@
   color: #333333;
 }
 
-.search__input::placeholder {
+.search__box__input::placeholder {
   color: #9a9a9a;
 }
 
-.search__input:focus {
+.search__box__input:focus {
   outline: none;
   border-color: #151b8d;
   box-shadow: 0 0 0 2px rgba(21, 27, 141, 0.2);
 }
 
-.search__button {
+.search__box__button {
   background-color: #007bff;
   color: #ffffff;
   font-weight: 600;

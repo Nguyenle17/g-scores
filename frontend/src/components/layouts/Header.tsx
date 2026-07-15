@@ -1,8 +1,5 @@
 import "./Header.css";
-
-interface HeaderProps {
-  title?: string;
-}
+import type { HeaderProps } from "@/types/HeaderProps";
 
 export default function Header({
   title = "G-Scores",

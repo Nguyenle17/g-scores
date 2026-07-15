@@ -1,16 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { StudentResponseDto } from './dto/StudentResponse';
+import { StudentTopGroupARow } from './types/StudentTopGroupARow';
 import { StudentTopGroupAResponseDto } from './dto/StudentTopGroupAResponseDto';
-
-type StudentTopGroupARow = {
-  id: number;
-  sbd: string;
-  toan: number;
-  vat_li: number;
-  hoa_hoc: number;
-  diem_khoi_a: number;
-};
 
 @Injectable()
 export class StudentService {
@@ -50,6 +42,7 @@ export class StudentService {
   async top10StudentGroupA(): Promise<Array<StudentTopGroupAResponseDto>> {
     const students = await this.prisma.$queryRaw<StudentTopGroupARow[]>`
     SELECT
+        id,
         sbd,
         toan,
         vat_li,
