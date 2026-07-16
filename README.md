@@ -40,7 +40,7 @@ cd g-scores
 ```
 
 ### 2. Khởi động ứng dụng
-
+Tạo file `.env` trong thư mục `frontend` và `backend` (Sao chép từ `.env.EXAMPLE`)
 ```bash
 docker compose up --build
 ```
